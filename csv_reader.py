@@ -1,10 +1,15 @@
 import csv
 import numpy as np
 
+"""'Non-Tumor' = Non-Tumor -> 0, 
+'Non-Viable-Tumor' = Necrosis -> 1,
+'Viable' = 'viable: non-viable' = Viable -> 2 """
 text_labels = ['Non-Tumor', 'Non-Viable-Tumor', 'Viable', 'viable: non-viable']
 labels = []
 
 def get_labels(file_name):
+    """ Takes the file name of a csv-file (the big one), 
+        and outputs a dictionary {image_file_name: label} """
     with open(file_name, mode='r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
         files_and_labels = {}
