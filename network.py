@@ -42,6 +42,7 @@ def print_layer_trainable(model):
 		print("{0}:\t{1}".format(layer.trainable, layer.name))
 
 def make_generator_train(train_dir, input_shape, batch_size, save_to_dir):
+	""" Makes a training data generator from directory """
 	datagen_train = ImageDataGenerator(
 		rescale=1./255,
 		#rotation_range=180,
@@ -61,6 +62,7 @@ def make_generator_train(train_dir, input_shape, batch_size, save_to_dir):
 	return generator_train
 
 def make_generator_test(test_dir, input_shape, batch_size):
+	""" Makes a data generator for test data from directory """
 	datagen_test = ImageDataGenerator(rescale=1./255)
 	generator_test = datagen_test.flow_from_directory(directory=test_dir,
                                                   target_size=input_shape,
