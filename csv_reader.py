@@ -1,5 +1,6 @@
 import csv
 import numpy as np
+from PIL import Image
 
 """'Non-Tumor' = Non-Tumor -> 0, 
 'Non-Viable-Tumor' = Necrosis -> 1,
@@ -24,3 +25,17 @@ def get_labels(file_name):
                 label = 2
             files_and_labels[image_file_name] = label
     return(files_and_labels)
+
+def sort_data(dictionary): 
+    folder_path = "Data_Osteo_Tiles/all_data/"
+    for key in dictionary: 
+        c = dictionary[key]
+        file_path = folder_path + key
+        print(file_path)
+        img = Image.open(file_path)
+        save_folder_path = "Data_Osteo_Tiles/all_data/class_" + str(c) + "/" + key
+        print(save_folder_path)
+        img.save(save_folder_path, "JPEG")
+
+
+

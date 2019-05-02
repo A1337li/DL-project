@@ -1,4 +1,6 @@
 from csv_reader import get_labels
+from csv_reader import sort_data
+
 from network import *
 from sklearn.utils.class_weight import compute_class_weight
 
@@ -24,6 +26,8 @@ for label in labels.values():
 print("label percentages: ")
 for counter in label_counter:
 	print(counter/len(labels))
+
+sort_data(labels)
 
 
 """ Create model & compile """
@@ -58,3 +62,4 @@ history = new_model.fit_generator(generator=generator_train,
 
 """ Need function that reads in data and then we can train the model using 
 	history = new_model.fit_generator(...)"""
+
