@@ -4,6 +4,7 @@ import PIL
 import tensorflow as tf
 import numpy as np
 import os
+import math
 
 from tensorflow.python.keras.models import Model, Sequential
 from tensorflow.python.keras.layers import Dense, Flatten, Dropout
@@ -79,6 +80,14 @@ def visualize_layer(img):
 	                   outputs=transfer_layer.output)
 	conv_res = conv_model.predict(img_batch)
 
-	img = np.squeeze(conv_res, axis=0)
-	print(img.shape)
-	plt.imshow(img)
+	#img = np.squeeze(conv_res, axis=0)
+	#print(img.shape)
+	n_filters = 512
+	plt.figure(1, figsize=(224,224))
+	n_cols = 3
+	n_rows = math.ceil(n_filters / n_cols)
+	for j in range(n_filters): 
+		plt.subplot(n_rows, n_cols, j+1)
+		plt.title('Filter ' + str(j))
+		plt.imshow(conv_res[0,:,:,j], interpolation="nearest")
+	print('done')
