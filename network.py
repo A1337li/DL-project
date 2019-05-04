@@ -70,4 +70,15 @@ def make_generator_test(test_dir, input_shape, batch_size):
                                                   shuffle=False)
 	return generator_test
 
+def visualize_layer(img): 
+	img_batch = np.expand_dims(img, axis=0)
+	print(img_batch.shape)
+	model = VGG16(include_top=True, weights='imagenet') #create VGG16
+	transfer_layer = model.get_layer('block5_pool') #find final conv_layer
+	conv_model = Model(inputs=model.input,
+	                   outputs=transfer_layer.output)
+	conv_res = conv_model.predict(img_batch)
 
+	img = np.squeeze(conv_res, axis=0)
+	print(img.shape)
+	plt.imshow(img)
