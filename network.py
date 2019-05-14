@@ -4,6 +4,7 @@ import PIL
 import tensorflow as tf
 import numpy as np
 import os
+import math
 
 from tensorflow.python.keras.models import Model, Sequential
 from tensorflow.python.keras.layers import Dense, Flatten, Dropout
@@ -70,4 +71,23 @@ def make_generator_test(test_dir, input_shape, batch_size):
                                                   shuffle=False)
 	return generator_test
 
+def visualize_layer(img): 
+	img_batch = np.expand_dims(img, axis=0)
+	print(img_batch.shape)
+	model = VGG16(include_top=True, weights='imagenet') #create VGG16
+	transfer_layer = model.get_layer('block5_pool') #find final conv_layer
+	conv_model = Model(inputs=model.input,
+	                   outputs=transfer_layer.output)
+	conv_res = conv_model.predict(img_batch)
 
+	#img = np.squeeze(conv_res, axis=0)
+	#print(img.shape)
+	n_filters = 512
+	plt.figure(1, figsize=(224,224))
+	n_cols = 3
+	n_rows = math.ceil(n_filters / n_cols)
+	for j in range(n_filters): 
+		plt.subplot(n_rows, n_cols, j+1)
+		plt.title('Filter ' + str(j))
+		plt.imshow(conv_res[0,:,:,j], interpolation="nearest")
+	print('done')
