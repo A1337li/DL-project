@@ -1,6 +1,8 @@
 from csv_reader import get_labels
 from csv_reader import sort_data
 
+import os
+import shutil
 from network import *
 from sklearn.utils.class_weight import compute_class_weight
 
@@ -60,3 +62,5 @@ history = new_model.fit_generator(generator=generator_train,
                                   validation_data=generator_test,
                                   validation_steps=steps_test)
 
+shutil.rmtree(save_to_dir)
+os.makedirs(save_to_dir)
