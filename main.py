@@ -64,8 +64,9 @@ history = new_model.fit_generator(generator=generator_train,
                                   validation_steps=steps_test)
 
 new_conv_model = new_model.layers[0]
-visualize_layer(new_conv_model, block4_conv1)
-visualize_layer(new_conv_model, block5_conv3)
+visualize_layer(new_conv_model, 'block4_conv1')
+visualize_layer(new_conv_model, 'block5_conv3')
+
 
 shutil.rmtree(save_to_dir)
 os.makedirs(save_to_dir)
