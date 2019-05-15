@@ -5,11 +5,12 @@ import os
 import shutil
 from network import *
 from sklearn.utils.class_weight import compute_class_weight
+from vizTransfer import *
 
 labels = get_labels("Data_Osteo_Tiles/ML_Features_1144.csv")
 label_counter = [0]*3
 
-num_classes = 3 
+num_classes = 3
 FC_layers = [1024, 256] #layer sizes of FC layers in classification part
 cutoff_layer = 20
 batch_size  = 20
@@ -61,6 +62,10 @@ history = new_model.fit_generator(generator=generator_train,
                                   class_weight=class_weight,
                                   validation_data=generator_test,
                                   validation_steps=steps_test)
+
+new_conv_model = new_model.layers[0]
+visualize_layer(new_conv_model, block4_conv1)
+visualize_layer(new_conv_model, block5_conv3)
 
 shutil.rmtree(save_to_dir)
 os.makedirs(save_to_dir)
