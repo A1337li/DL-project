@@ -1,6 +1,8 @@
 from csv_reader import get_labels
 from csv_reader import sort_data
 
+import os
+import shutil
 from network import *
 from sklearn.utils.class_weight import compute_class_weight
 
@@ -13,7 +15,7 @@ cutoff_layer = 20
 batch_size  = 20
 epochs = 20
 steps_per_epoch = 100
-train_dir = "Data_Osteo_Tiles/all_data"
+train_dir = "Data_Osteo_Tiles/train_data"
 test_dir = "Data_Osteo_Tiles/test_data"
 save_to_dir = "Data_Osteo_Tiles/save_to_directory"
 input_shape = []
@@ -60,3 +62,5 @@ history = new_model.fit_generator(generator=generator_train,
                                   validation_data=generator_test,
                                   validation_steps=steps_test)
 
+shutil.rmtree(save_to_dir)
+os.makedirs(save_to_dir)
