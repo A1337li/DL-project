@@ -1,5 +1,4 @@
-from __future__ import print_function
-
+#from __future__ import print_function
 import time
 import numpy as np
 from PIL import Image as pil_image
@@ -10,17 +9,11 @@ from tensorflow.python.keras import backend as K
 import network as nt
 import tensorflow as tf
 
-def normalize(x):
-    """utility function to normalize a tensor.
-
-    # Arguments
-        x: An input tensor.
-
-    # Returns
-        The normalized input tensor.
-    """
-    return x / (K.sqrt(K.mean(K.square(x))) + K.epsilon())
-
+# used to normalize gradients
+def normalize(x_in):
+    nominator = (K.sqrt(K.mean(K.square(x_in))) + K.epsilon())
+    x_in = x_in/nominator
+    return x_in
 
 def deprocess_image(x):
     """utility function to convert a float array into a valid uint8 image.
