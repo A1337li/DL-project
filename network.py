@@ -46,14 +46,14 @@ def make_generator_train(train_dir, input_shape, batch_size, save_to_dir):
 	""" Makes a training data generator from directory """
 	datagen_train = ImageDataGenerator(
 		rescale=1./255,
-		#rotation_range=180,
-		#width_shift_range=0.1,
-		#height_shift_range=0.1,
-		#shear_range=0.1,
-		#zoom_range=[0.9, 1.5],
-		#horizontal_flip=True,
-		#vertical_flip=True,
-		#fill_mode='nearest'
+		rotation_range=180,
+		width_shift_range=0.1,
+		height_shift_range=0.1,
+		zoom_range=[0.9, 1.5],
+		horizontal_flip=True,
+		vertical_flip=True,
+		fill_mode='reflect',
+		brightness_range=[0.9, 1.1]
 		)
 	generator_train = datagen_train.flow_from_directory(directory=train_dir,
                                                     target_size=input_shape,

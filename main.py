@@ -11,15 +11,18 @@ label_counter = [0]*3
 
 num_classes = 3 
 FC_layers = [1024, 256] #layer sizes of FC layers in classification part
-cutoff_layer = 20
+cutoff_layer = 12
 batch_size  = 20
 epochs = 20
 steps_per_epoch = 100
+learning_rate = 1e-5
 train_dir = "Data_Osteo_Tiles/train_data"
 test_dir = "Data_Osteo_Tiles/test_data"
 save_to_dir = "Data_Osteo_Tiles/save_to_directory"
 input_shape = []
 
+shutil.rmtree(save_to_dir)
+os.makedirs(save_to_dir)
 
 
 for label in labels.values():
@@ -33,7 +36,7 @@ for counter in label_counter:
 
 """ Create model & compile """
 new_model, conv_model = create_model(FC_layers, num_classes)
-optimizer = Adam(lr=1e-5)
+optimizer = Adam(lr=learning_rate)
 loss = 'categorical_crossentropy'
 metrics = ['categorical_accuracy']
 conv_model = set_layers_trainable(conv_model, cutoff_layer)
