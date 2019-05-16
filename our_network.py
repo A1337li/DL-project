@@ -7,22 +7,22 @@ def create_our_model():
 
 	# BLOCK 1
 	model = Sequential()
-	model.add(Conv2D(32, (3, 3), input_shape = [224, 224, 3]))
+	model.add(Conv2D(64, (3, 3), input_shape = [224, 224, 3]))
 		# arg1 = n_filters, arg2 = filter size, arg3 = input size for making it dynamic 
-	model.add(Conv2D(32, (3, 3)))
+	model.add(Conv2D(64, (3, 3)))
 	#model.add(Activation('relu'))
 	model.add(MaxPooling2D(pool_size = (2, 2)))
 	
 	# BLOCK 2
-	model.add(Conv2D(64, (3, 3)))
-	model.add(Conv2D(64, (3, 3)))
+	model.add(Conv2D(128, (3, 3)))
+	model.add(Conv2D(128, (3, 3)))
 	#model.add(Activation('relu'))
 	model.add(MaxPooling2D(pool_size = (2, 2)))
 
 	# BLOCK 3
-	model.add(Conv2D(128, (3, 3)))
-	model.add(Conv2D(128, (3, 3)))
-	model.add(Conv2D(128, (3, 3)))
+	model.add(Conv2D(256, (3, 3)))
+	model.add(Conv2D(256, (3, 3)))
+	model.add(Conv2D(256, (3, 3)))
 	#model.add(Activation('relu'))
 	model.add(MaxPooling2D(pool_size = (2, 2)))
 
