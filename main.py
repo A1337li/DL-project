@@ -40,11 +40,10 @@ new_model, conv_model = create_model(FC_layers, num_classes)
 optimizer = Adam(lr=learning_rate)
 loss = 'categorical_crossentropy'
 metrics = ['categorical_accuracy']
-conv_model = set_layers_trainable(conv_model, cutoff_layer)
+new_model, conv_model, input_shape = reinitialize_final_layers(new_model, conv_model, cutoff_layer)
 print_layer_trainable(conv_model)
 new_model.compile(optimizer=optimizer, loss=loss, metrics=metrics)
 
-input_shape = conv_model.layers[0].output_shape[1:3]
 print(input_shape)
 
 """create data generators"""
@@ -63,9 +62,12 @@ history = new_model.fit_generator(generator=generator_train,
                                   epochs=epochs,
                                   steps_per_epoch=steps_per_epoch,
                                   class_weight=class_weight,
-                                  validation_data=generator_test,
-                                  validation_steps=steps_test)
+                                  #validation_data=generator_test,
+                                  #validation_steps=steps_test
+                                  )
 
+scores = new_model.evaluate_generator(generator=generator_test)
+print("Acc:", scores[1], )
 new_conv_model = new_model.layers[0]
 visualize_layer(new_conv_model, 'block4_conv1')
 visualize_layer(new_conv_model, 'block5_conv3')

@@ -17,6 +17,7 @@ def create_model(FC_layers, num_classes):
 	""" Creates model. Adds classification layers according to the sizes in list FC_layers """
 	model = VGG16(include_top=True, weights='imagenet') #create VGG16
 	transfer_layer = model.get_layer('block5_pool') #find final conv_layer
+	print(model.input)
 	conv_model = Model(inputs=model.input,
 	                   outputs=transfer_layer.output) # Isolate convolutional part of VGG16
 	new_model = Sequential() # initialize our new model
@@ -36,6 +37,44 @@ def set_layers_trainable(conv_model, cutoff_layer):
 		else:
 			layer.trainable = True
 	return conv_model
+
+def reinitialize_final_layers(trained_full_model, trained_conv_model, cutoff_layer):
+	untrained_model = VGG16(include_top=False, weights=None)
+	mixed_model = Sequential()
+	input_layer = trained_conv_model.get_layer("input_1")
+	input_shape = input_layer.output_shape[1:3]
+	mixed_model.add(input_layer)
+	for layer in trained_conv_model.layers:
+	layer_counter = 0
+	for layer in untrained_model.layers:
+		name = layer.name
+		if layer_counter == 0:
+			right_layer = untrained_model.get_layer(name)
+		elif layer_counter < cutoff_layer - 1:
+			right_layer = trained_conv_model.get_layer(name)
+		else:
+			right_layer = untrained_model.get_layer(name)
+		mixed_model.add(right_layer)
+		layer_counter += 1
+	layer_counter = 0
+	for layer in trained_full_model.layers:
+		if layer_counter > 0:
+			mixed_model.add(layer)
+		layer_counter += 1
+	mixed_conv_model = Sequential()
+	layer_counter = 0
+	for layer in mixed_model.layers:
+		if layer_counter < cutoff_layer - 1:
+			layer.trainable = False
+		else: 
+			layer.trainable = True
+		if layer_counter < 19:
+			mixed_conv_model.add(layer)
+		layer_counter += 1
+	return mixed_model, mixed_conv_model, input_shape
+
+
+
 
 def print_layer_trainable(model):
 	""" Prints which layers are trainable and which are not """
