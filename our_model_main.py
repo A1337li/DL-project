@@ -63,8 +63,15 @@ class_weight = compute_class_weight(class_weight='balanced',
 history = new_model.fit_generator(generator=generator_train,
                                   epochs=epochs,
                                   steps_per_epoch=steps_per_epoch,
-                                  class_weight=class_weight,
-                                  validation_data=generator_test,
-                                  validation_steps=steps_test)
+                                  class_weight=class_weight)
+                                  #validation_data=generator_test,
+                                  #validation_steps=steps_test)
 
+# testing the model
+test_res = evaluate_generator(generator = generator_test)
+print('+'*80)
+print('accuracy is')
+print(test_res[1])
+print('+'*80)
+print(test_res)
 
