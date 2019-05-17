@@ -119,23 +119,17 @@ def get_conv_part(my_model):
 			add = False
 	return(conv_part)
 
-def visualize_layer(img): 
-	img_batch = np.expand_dims(img, axis=0)
-	print(img_batch.shape)
-	model = VGG16(include_top=True, weights='imagenet') #create VGG16
+def create_untrained_model(FC_layers, num_classes):
+	""" Creates model. Adds classification layers according to the sizes in list FC_layers """
+	model = VGG16(include_top=True, weights='None') #create VGG16
 	transfer_layer = model.get_layer('block5_pool') #find final conv_layer
+	print(model.input)
 	conv_model = Model(inputs=model.input,
-	                   outputs=transfer_layer.output)
-	conv_res = conv_model.predict(img_batch)
-
-	#img = np.squeeze(conv_res, axis=0)
-	#print(img.shape)
-	n_filters = 512
-	plt.figure(1, figsize=(224,224))
-	n_cols = 3
-	n_rows = math.ceil(n_filters / n_cols)
-	for j in range(n_filters): 
-		plt.subplot(n_rows, n_cols, j+1)
-		plt.title('Filter ' + str(j))
-		plt.imshow(conv_res[0,:,:,j], interpolation="nearest")
-	print('done')
+	                   outputs=transfer_layer.output) # Isolate convolutional part of VGG16
+	new_model = Sequential() # initialize our new model
+	new_model.add(conv_model) # add conv part from VGG16
+	new_model.add(Flatten()) # add flattening layer
+	for size in FC_layers: # Add FC layers according to sizes in FC_layers
+		new_model.add(Dense(size, activation='relu'))
+	new_model.add(Dense(num_classes, activation='softmax'))
+	return new_model
