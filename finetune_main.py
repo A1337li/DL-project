@@ -17,7 +17,7 @@ cutoff_layer = 12
 batch_size  = 20
 epochs = 20
 steps_per_epoch = math.ceil(1144/batch_size)
-learning_rate = 1e-5
+learning_rate = 1e-2
 train_dir = "Data_Osteo_Tiles/train_data"
 test_dir = "Data_Osteo_Tiles/test_data"
 save_to_dir = "Data_Osteo_Tiles/save_to_directory"
@@ -77,8 +77,11 @@ print(test_res)
 
 new_conv_model = new_model.layers[0]
 visualize_layer(new_conv_model, 'block4_conv1')
+visualize_layer(new_conv_model, 'block4_conv2')
+visualize_layer(new_conv_model, 'block4_conv3')
+visualize_layer(new_conv_model, 'block5_conv1')
+visualize_layer(new_conv_model, 'block5_conv2')
 visualize_layer(new_conv_model, 'block5_conv3')
-
 
 shutil.rmtree(save_to_dir)
 os.makedirs(save_to_dir)
