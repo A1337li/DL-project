@@ -6,6 +6,7 @@ import shutil
 from network import *
 from sklearn.utils.class_weight import compute_class_weight
 from vizTransfer import *
+import math
 
 labels = get_labels("Data_Osteo_Tiles/ML_Features_1144.csv")
 label_counter = [0]*3
@@ -15,7 +16,7 @@ FC_layers = [1024, 256] #layer sizes of FC layers in classification part
 cutoff_layer = 12
 batch_size  = 20
 epochs = 20
-steps_per_epoch = 100
+steps_per_epoch = math.ceil(1144/batch_size)
 learning_rate = 1e-5
 train_dir = "Data_Osteo_Tiles/train_data"
 test_dir = "Data_Osteo_Tiles/test_data"
