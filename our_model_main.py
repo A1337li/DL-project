@@ -7,6 +7,7 @@ from our_network import *
 from network import *
 from sklearn.utils.class_weight import compute_class_weight
 from vizTransfer import *
+import math
 
 labels = get_labels("Data_Osteo_Tiles/ML_Features_1144.csv")
 label_counter = [0]*3
@@ -15,8 +16,8 @@ num_classes = 3
 FC_layers = [1024, 256] #layer sizes of FC layers in classification part
 cutoff_layer = 12
 batch_size  = 20
-epochs = 20
-steps_per_epoch = 100
+epochs = 2
+steps_per_epoch = math.ceil(1144/batch_size)
 learning_rate = 1e-5
 train_dir = "Data_Osteo_Tiles/train_data"
 test_dir = "Data_Osteo_Tiles/test_data"
@@ -63,8 +64,15 @@ class_weight = compute_class_weight(class_weight='balanced',
 history = new_model.fit_generator(generator=generator_train,
                                   epochs=epochs,
                                   steps_per_epoch=steps_per_epoch,
-                                  class_weight=class_weight,
-                                  validation_data=generator_test,
-                                  validation_steps=steps_test)
+                                  class_weight=class_weight)
+                                  #validation_data=generator_test,
+                                  #validation_steps=steps_test)
 
+# testing the model
+test_res = new_model.evaluate_generator(generator = generator_test)
+print('+'*80)
+print('accuracy is')
+print(test_res[1])
+print('+'*80)
+print(test_res)
 

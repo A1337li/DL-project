@@ -44,7 +44,6 @@ def reinitialize_final_layers(trained_full_model, trained_conv_model, cutoff_lay
 	input_layer = trained_conv_model.get_layer("input_1")
 	input_shape = input_layer.output_shape[1:3]
 	mixed_model.add(input_layer)
-	for layer in trained_conv_model.layers:
 	layer_counter = 0
 	for layer in untrained_model.layers:
 		name = layer.name
@@ -109,6 +108,16 @@ def make_generator_test(test_dir, input_shape, batch_size):
                                                   batch_size=batch_size,
                                                   shuffle=False)
 	return generator_test
+
+def get_conv_part(my_model):
+	conv_part = Sequential()
+	add = True
+	for layer in my_model.layers:
+		if add:
+			conv_part.add(layer)
+		if layer.name == "block5_pool":
+			add = False
+	return(conv_part)
 
 def visualize_layer(img): 
 	img_batch = np.expand_dims(img, axis=0)
